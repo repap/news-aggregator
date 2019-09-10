@@ -1,6 +1,5 @@
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router()
 
-router.get('/', (req, res) => res.send('hello world :)'))
+router.use('/news', require('./news/router'))
 
 module.exports = router
