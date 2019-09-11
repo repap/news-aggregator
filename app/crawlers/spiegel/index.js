@@ -4,14 +4,21 @@ const axios = require('axios')
 const {PORT} = require('../../configuration')
 
 const BASE_URL = 'https://www.spiegel.de'
+
 let intervalId
+let lastCrawlResult = []
 
 const crawl = async () => {
   const dom = await JSDOM.fromURL('https://www.spiegel.de')
   const document = dom.window.document
+  
+  const newsList = await axios.get('http://localhost:' + PORT + '/api/news')
+    .catch(console.error)
 
-  const newsList = [...document.querySelectorAll('.article-title a, .article-list a')]
-    .map(linkElement => ({
+  lastCrawlResult = newsList.data.data
+
+  const rawNewsList = [...document.querySelectorAll('.article-title a, .article-list a')]
+  .map(linkElement => ({
       title: linkElement.getAttribute('title'),
       url: BASE_URL + linkElement.getAttribute('href'),
       category: linkElement.getAttribute('href').split('/')[1],
@@ -19,15 +26,24 @@ const crawl = async () => {
     }))
     .filter(newsObject => newsObject.category !== "")
     .map(newsObject => newsObject.subCategory.includes('-') ?
-      { ...newsObject, subCategory: '' } :
+    { ...newsObject, subCategory: '' } :
       { ...newsObject })
+      
+  const filteredNewsList = 
+    rawNewsList.filter(news => 
+      !lastCrawlResult.find(lastNews => lastNews.url === news.url)) 
 
-  axios({
+  // console.log(lastCrawlResult)
+  console.log(filteredNewsList.length)
+
+  await axios({
     method: 'post',
     url: 'http://localhost:' + PORT + '/api/news',
-    headers: {},
-    body: JSON.stringify(newsList)
-  })
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: { news: filteredNewsList }
+  }).catch(console.error)
 }
 
 function init({ crawlInterval }) {

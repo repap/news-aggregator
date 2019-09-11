@@ -10,7 +10,7 @@ module.exports = (()=>{
   const app = express()
 
   // Setup morgan logger
-  app.use(morgan('combined'))
+  app.use(morgan('dev'))
 
   // Setup Bodyparser
   app.use(bodyParser.urlencoded({ extended: false }))

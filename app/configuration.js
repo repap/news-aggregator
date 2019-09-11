@@ -6,7 +6,7 @@ const config = {
     USER: process.env.MONGO_DB_USER
   },
   crawler: {
-    crawlInterval: 5000,
+    crawlInterval: process.env.CRAWLER_INTERVAL || 30000,
   }
 }
 

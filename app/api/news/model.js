@@ -3,9 +3,14 @@ const Schema = mongoose.Schema;
 
 const NewsSchema = new Schema({
   title: String,
-  url: String,
   category: String,
   subCategory: String,
+  url: {
+    type: String, 
+    unique: true,
+  }
 });
 
-module.exports = mongoose.model('News', NewsSchema)
+const News = mongoose.model('News', NewsSchema)
+
+module.exports = News

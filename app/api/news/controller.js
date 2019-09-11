@@ -1,20 +1,31 @@
 const model = require('./model')
 
 const add = async (req, res) => {
-  const requestBody = {...req.body}
+  const {news} = req.body
 
-  const news = await new model(requestBody).save()
+  const newsList = await Promise.all(
+    news
+      .map(news => new model(news)
+        .save()
+        .catch(err => console.error(err.message)))
+  ).catch(err => console.error(err.message))
 
   return res.json({
     status: 'success',
-    data: news
+    data: newsList
   })
 }
 
 const get = async (req, res) => {
-  const {_id} = req.params
+  const {id} = req.params
 
-  const newsList = await model.find({_id})
+  let newsList = []
+
+  if(id) {
+    newsList.push(await model.findById(id))
+  } else {
+    newsList = await model.find()
+  }
 
   return res.json({
     status: 'success',
