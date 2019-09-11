@@ -27,7 +27,7 @@ function init({ crawlInterval }) {
   }
 
   crawl()
-  setInterval(crawl, crawlerInterval)
+  setInterval(crawl, crawlInterval)
 }
 
 module.exports = {
