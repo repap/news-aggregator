@@ -1,4 +1,7 @@
 const {JSDOM} = require('jsdom')
+const axios = require('axios')
+
+const {PORT} = require('../../configuration')
 
 const BASE_URL = 'https://www.spiegel.de'
 let intervalId
@@ -18,6 +21,13 @@ const crawl = async () => {
     .map(newsObject => newsObject.subCategory.includes('-') ?
       { ...newsObject, subCategory: '' } :
       { ...newsObject })
+
+  axios({
+    method: 'post',
+    url: 'http://localhost:' + PORT + '/api/news',
+    headers: {},
+    body: JSON.stringify(newsList)
+  })
 }
 
 function init({ crawlInterval }) {
