@@ -33,9 +33,6 @@ const crawl = async () => {
     rawNewsList.filter(news => 
       !lastCrawlResult.find(lastNews => lastNews.url === news.url)) 
 
-  // console.log(lastCrawlResult)
-  console.log(filteredNewsList.length)
-
   await axios({
     method: 'post',
     url: 'http://localhost:' + PORT + '/api/news',
