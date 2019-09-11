@@ -1,10 +1,9 @@
 const model = require('./model')
 
-const add = (req, res) => {
-  const news = {...req.body}
+const add = async (req, res) => {
+  const requestBody = {...req.body}
 
-  // save news
-  // new model -> save
+  const news = await new model(requestBody).save()
 
   return res.json({
     status: 'success',
@@ -12,22 +11,14 @@ const add = (req, res) => {
   })
 }
 
-const get = (req, res) => {
-  const {id} = req.params
-  const {filter} = req.query
+const get = async (req, res) => {
+  const {_id} = req.params
 
-  // get news
-  // model.find -> id or filter
-  const news = {
-    title: 'test',
-    url: 'https://www.heise.de',
-    category: 'test',
-    subCategory: 'mega'
-  }
+  const newsList = await model.find({_id})
 
   return res.json({
     status: 'success',
-    data: news
+    data: newsList
   })
 }
 
