@@ -1,7 +1,7 @@
 const {JSDOM} = require('jsdom')
 
 const BASE_URL = 'https://www.spiegel.de'
-let intervallId
+let intervalId
 
 const crawl = async () => {
   const dom = await JSDOM.fromURL('https://www.spiegel.de')
@@ -20,13 +20,14 @@ const crawl = async () => {
       { ...newsObject })
 }
 
-function init({crawlerIntervall}) {
-  if(intervallId) {
-    clearInterval(intervallId)
+function init({ crawlInterval }) {
+  console.log(crawlInterval )
+  if(intervalId) {
+    clearInterval(intervalId)
   }
 
   crawl()
-  setInterval(crawl, crawlerIntervall)
+  setInterval(crawl, crawlerInterval)
 }
 
 module.exports = {
