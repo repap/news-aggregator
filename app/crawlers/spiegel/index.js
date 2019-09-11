@@ -21,7 +21,6 @@ const crawl = async () => {
 }
 
 function init({ crawlInterval }) {
-  console.log(crawlInterval )
   if(intervalId) {
     clearInterval(intervalId)
   }
