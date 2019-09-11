@@ -1,3 +1,5 @@
+require('./db')
+
 const express = require('express')
 const apiRoutes = require('./api')
 const bodyParser = require('body-parser')
